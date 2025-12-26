@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Prilist– Portfolio</title>
+
+  <meta name="description"
+
+    content="Priyal Malviya – Creative Web Designer & Frontend Developer. Animated, responsive portfolio with projects, skills, and contact." />
+
+  <meta name="keywords" content="Priyal Malviya, portfolio, web designer, frontend developer, HTML, CSS, JavaScript" />
+
+
+
+  <!-- Favicon (optional) -->
+
+  <link rel="icon"
+
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%2300d1ff'/><text x='50' y='62' font-size='58' text-anchor='middle' fill='white' font-family='Arial'>P</text></svg>">
+
+
+
+  <style>
+
+    :root {
+
+      --bg: #0b0d11;
+
+      --text: #e8eef9;
+
+      --muted: #b7c0d8;
+
+      --accent: #7c5cff;
+
+      --accent-2: #00e0d1;
+
+      --card: #121621;
+
+      --glass: rgba(255, 255, 255, .06);
+
+      --border: rgba(255, 255, 255, .12);
+
+      --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+
+      --radius: 20px;
+
+    }
+
+
+
+    /* Light theme vars */
+
+    .light {
+
+      --bg: #f6f7fb;
+
+      --text: #12141a;
+
+      --muted: #4a5568;
+
+      --accent: #6a5cff;
+
+      --accent-2: #00bfb2;
+
+      --card: #ffffff;
+
+      --glass: rgba(0, 0, 0, .04);
+
+      --border: rgba(0, 0, 0, .08);
+
+      --shadow: 0 10px 30px rgba(0, 0, 0, .08);
+
+    }
+
+
+
+    /* Reset */
+
+    * {
+
+      box-sizing: border-box
+
+    }
+
+
+
+    html,
+
+    body {
+
+      padding: 0;
+
+      margin: 0
+
+    }
+
+
+
+    body {
+
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
+
+      background: radial-gradient(1200px 800px at 80% -10%, rgba(124, 92, 255, .25), transparent 60%),
+
+        radial-gradient(1000px 700px at -10% 10%, rgba(0, 224, 209, .2), transparent 55%),
+
+        var(--bg);
+
+      color: var(--text);
+
+      line-height: 1.6;
+
+      overflow-x: hidden;
+
+      scroll-behavior: smooth;
+
+    }
+
+
+
+    a {
+
+      color: inherit;
+
+      text-decoration: none
+
+    }
+
+
+
+    img {
+
+      max-width: 100%;
+
+      display: block
+
+    }
+
+
+
+    /* Layout */
+
+    .container {
+
+      width: min(1200px, 92%);
+
+      margin-inline: auto
+
+    }
+
+
+
+    /* Navbar */
+
+    header {
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 50;
+
+      backdrop-filter: saturate(140%) blur(8px);
+
+      background: linear-gradient(180deg, rgba(0, 0, 0, .35), transparent);
+
+      border-bottom: 1px solid var(--border);
+
+    }
+
+
+
+    .nav {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      height: 68px
+
+    }
+
+
+
+    .brand {
+
+      display: flex;
+
+      gap: 12px;
+
+      align-items: center
+
+    }
+
+
+
+    .logo {
+
+      width: 40px;
+
+      height: 40px;
+
+      border-radius: 12px;
+
+      display: grid;
+
+      place-items: center;
+
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+
+      box-shadow: var(--shadow);
+
+      font-weight: 700
+
+    }
+
+
+
+    .navlinks {
+
+      display: flex;
+
+      gap: 20px;
+
+      align-items: center
+
+    }
+
+
+
+    .navlinks a {
+
+      opacity: .8;
+
+      padding: 10px 12px;
+
+      border-radius: 12px
+
+    }
+
+
+
+    .navlinks a:hover {
+
+      opacity: 1;
+
+      background: var(--glass)
+
+    }
+
+
+
+    .menu-btn {
+
+      display: none;
+
+      appearance: none;
+
+      border: 1px solid var(--border);
+
+      background: var(--glass);
+
+      padding: 10px 12px;
+
+      border-radius: 12px
+
+    }
+
+
+
+    @media (max-width: 880px) {
+
+      .menu-btn {
+
+        display: block
+
+      }
+
+
+
+      .navlinks {
+
+        position: fixed;
+
+        inset: 68px 0 auto auto;
+
+        right: 12px;
+
+        width: min(260px, 90vw);
+
+        background: color-mix(in lab, var(--card) 86%, transparent);
+
+        border: 1px solid var(--border);
+
+        border-radius: 16px;
+
+        padding: 12px;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        transform: translateY(-10px);
+
+        opacity: 0;
+
+        pointer-events: none;
+
+        transition: .2s ease;
+
+      }
+
+
+
+      .navlinks.open {
+
+        transform: translateY(0);
+
+        opacity: 1;
+
+        pointer-events: auto
+
+      }
+
+    }
+
+
+
+    /* Hero */
+
+    .hero {
+
+      position: relative;
+
+      padding: 96px 0 72px;
+
+      overflow: hidden
+
+    }
+
+
+
+    .hero-grid {
+
+      display: grid;
+
+      grid-template-columns: 1.1fr .9fr;
+
+      gap: 40px;
+
+      align-items: center
+
+    }
+
+
+
+    .eyebrow {
+
+      display: inline-flex;
+
+      gap: 10px;
+
+      align-items: center;
+
+      padding: 8px 12px;
+
+      border: 1px solid var(--border);
+
+      border-radius: 999px;
+
+      background: var(--glass);
+
+      font-size: 14px
+
+    }
+
+
+
+    .glow-dot {
+
+      width: 8px;
+
+      height: 8px;
+
+      border-radius: 999px;
+
+      background: var(--accent-2);
+
+      box-shadow: 0 0 18px var(--accent-2)
+
+    }
+
+
+
+    h1 {
+
+      font-size: clamp(34px, 4.5vw, 64px);
+
+      line-height: 1.05;
+
+      margin: 12px 0 8px
+
+    }
+
+
+
+    .lead {
+
+      font-size: clamp(16px, 1.25vw, 20px);
+
+      opacity: .92;
+
+      margin-bottom: 24px
+
+    }
+
+
+
+    .cta {
+
+      display: flex;
+
+      gap: 14px;
+
+      flex-wrap: wrap
+
+    }
+
+
+
+    .btn {
+
+      padding: 14px 18px;
+
+      border-radius: 14px;
+
+      border: 1px solid var(--border);
+
+      background: var(--glass);
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      font-weight: 600
+
+    }
+
+
+
+    .btn.primary {
+
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+
+      border-color: transparent;
+
+      color: white;
+
+      box-shadow: 0 10px 25px rgba(124, 92, 255, .35)
+
+    }
+
+
+
+    .btn:hover {
+
+      transform: translateY(-2px)
+
+    }
+
+
+
+    /* Floating avatar card */
+
+    .avatar-card {
+
+      position: relative;
+
+      border: 1px solid var(--border);
+
+      background: var(--card);
+
+      border-radius: var(--radius);
+
+      padding: 18px;
+
+      box-shadow: var(--shadow);
+
+      isolation: isolate
+
+    }
+
+
+
+    .avatar {
+
+      border-radius: 16px;
+
+      aspect-ratio: 1/1;
+
+      object-fit: cover;
+
+      filter: saturate(1.05) contrast(1.05)
+
+    }
+
+
+
+    .rings {
+
+      position: absolute;
+
+      inset: -40% -25% -25% -40%;
+
+      z-index: -1;
+
+      opacity: .6;
+
+    }
+
+
+
+    .rings::before,
+
+    .rings::after {
+
+      content: "";
+
+      position: absolute;
+
+      inset: 0;
+
+      border-radius: 50%;
+
+      background: radial-gradient(circle at 50% 50%, rgba(124, 92, 255, .25), transparent 50%),
+
+        radial-gradient(circle at 60% 40%, rgba(0, 224, 209, .25), transparent 55%);
+
+      filter: blur(40px);
+
+      animation: float 8s ease-in-out infinite alternate;
+
+      opacity: .9
+
+    }
+
+
+
+    @keyframes float {
+
+      to {
+
+        transform: translateY(10px) scale(1.03) rotate(1deg)
+
+      }
+
+    }
+
+
+
+    /* Section base */
+
+    section {
+
+      padding: 72px 0
+
+    }
+
+
+
+    .section-title {
+
+      font-size: clamp(24px, 3.2vw, 36px);
+
+      margin: 0 0 18px
+
+    }
+
+
+
+    .section-sub {
+
+      color: var(--muted);
+
+      margin: 0 0 28px
+
+    }
+
+
+
+    /* About */
+
+    .about {
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 28px
+
+    }
+
+
+
+    .about .card {
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      padding: 22px
+
+    }
+
+
+
+    @media (max-width: 900px) {
+
+      .hero-grid {
+
+        grid-template-columns: 1fr
+
+      }
+
+
+
+      .about {
+
+        grid-template-columns: 1fr
+
+      }
+
+    }
+
+
+
+    /* Skills */
+
+    .skills {
+
+      display: grid;
+
+      grid-template-columns: repeat(12, 1fr);
+
+      gap: 14px
+
+    }
+
+
+
+    .skill {
+
+      grid-column: span 6;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: 14px;
+
+      padding: 12px 14px
+
+    }
+
+
+
+    .skill .bar {
+
+      height: 8px;
+
+      border-radius: 999px;
+
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+
+      flex: 1;
+
+      margin-left: 12px;
+
+      transform: scaleX(.2);
+
+      transform-origin: left
+
+    }
+
+
+
+    @media (max-width: 720px) {
+
+      .skill {
+
+        grid-column: span 12
+
+      }
+
+    }
+
+
+
+    /* Projects */
+
+    .grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(12, 1fr);
+
+      gap: 18px
+
+    }
+
+
+
+    .card {
+
+      grid-column: span 4;
+
+      position: relative;
+
+      overflow: hidden;
+
+      border-radius: 18px;
+
+      border: 1px solid var(--border);
+
+      background: linear-gradient(180deg, color-mix(in lab, var(--card) 80%, transparent), color-mix(in lab, var(--card) 92%, transparent));
+
+      box-shadow: var(--shadow)
+
+    }
+
+
+
+    .card .thumb {
+
+      aspect-ratio: 16/10;
+
+      background: linear-gradient(135deg, rgba(124, 92, 255, .2), rgba(0, 224, 209, .18));
+
+      display: grid;
+
+      place-items: center;
+
+      font-weight: 700;
+
+      letter-spacing: .5px
+
+    }
+
+
+
+    .card .content {
+
+      padding: 16px
+
+    }
+
+
+
+    .tag {
+
+      display: inline-block;
+
+      font-size: 12px;
+
+      opacity: .8;
+
+      border: 1px solid var(--border);
+
+      padding: 6px 10px;
+
+      border-radius: 999px;
+
+      background: var(--glass);
+
+      margin-right: 8px
+
+    }
+
+
+
+    .card:hover {
+
+      transform: translateY(-6px)
+
+    }
+
+
+
+    @media (max-width: 980px) {
+
+      .card {
+
+        grid-column: span 6
+
+      }
+
+    }
+
+
+
+    @media (max-width: 640px) {
+
+      .card {
+
+        grid-column: span 12
+
+      }
+
+    }
+
+
+
+    /* Services */
+
+    .service {
+
+      grid-column: span 4;
+
+      padding: 18px;
+
+      border: 1px solid var(--border);
+
+      border-radius: 18px;
+
+      background: var(--card);
+
+      position: relative;
+
+      overflow: hidden
+
+    }
+
+
+
+    .service::after {
+
+      content: "";
+
+      position: absolute;
+
+      inset: auto -20% -20% auto;
+
+      width: 180px;
+
+      height: 180px;
+
+      border-radius: 50%;
+
+      background: radial-gradient(circle at 30% 30%, rgba(124, 92, 255, .26), transparent 60%)
+
+    }
+
+
+
+    /* Contact */
+
+    form {
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 14px;
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      padding: 18px;
+
+      border-radius: 18px
+
+    }
+
+
+
+    form input,
+
+    form textarea {
+
+      background: var(--glass);
+
+      border: 1px solid var(--border);
+
+      border-radius: 12px;
+
+      padding: 12px 14px;
+
+      color: var(--text);
+
+      outline: none
+
+    }
+
+
+
+    form textarea {
+
+      grid-column: 1/-1;
+
+      min-height: 140px;
+
+      resize: vertical
+
+    }
+
+
+
+    form button {
+
+      justify-self: start
+
+    }
+
+
+
+    @media (max-width: 700px) {
+
+      form {
+
+        grid-template-columns: 1fr
+
+      }
+
+    }
+
+
+
+    /* Footer */
+
+    footer {
+
+      padding: 48px 0 60px;
+
+      color: var(--muted);
+
+      border-top: 1px solid var(--border)
+
+    }
+
+
+
+    /* Reveal animations */
+
+    .reveal {
+
+      opacity: 0;
+
+      transform: translateY(14px);
+
+      transition: .6s cubic-bezier(.2, .8, .2, 1)
+
+    }
+
+
+
+    .revealed {
+
+      opacity: 1;
+
+      transform: none
+
+    }
+
+
+
+    /* Prefers-reduced-motion */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      * {
+
+        animation: none !important;
+
+        transition: none !important;
+
+        scroll-behavior: auto
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+
+<body>
+
+  <!-- Header / Navbar -->
+
+  <header>
+
+    <div class="container nav">
+
+      <a class="brand" href="#home">
+
+        <div class="logo">P</div>
+
+        <strong>Prilist</strong>
+
+      </a>
+
+      <nav class="navlinks" id="navlinks">
+
+        <a href="#about">About</a>
+
+        <a href="#skills">Skills</a>
+
+        <a href="#projects">Projects</a>
+
+        <a href="#services">Services</a>
+
+        <a href="#contact">Contact</a>
+
+        <button class="btn" id="themeToggle" aria-label="Toggle theme">🌗 Theme</button>
+
+      </nav>
+
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- Hero -->
+
+  <section class="hero container" id="home">
+
+    <div class="hero-grid">
+
+      <div>
+
+        <div class="eyebrow reveal"><span class="glow-dot"></span> Available for freelance projects</div>
+
+        <h1 class="reveal" style="transition-delay:.06s">Hi, I'm Priyal —
+
+          <span
+
+            style="background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent">Web
+
+            Designer</span>
+
+          & Frontend Developer
+
+        </h1>
+
+        <p class="lead reveal" style="transition-delay:.12s">I craft colorful, animated and responsive web experiences
+
+          that feel premium and perform fast.</p>
+
+        <div class="cta reveal" style="transition-delay:.18s">
+
+          <a class="btn primary" href="#projects">🚀 See Projects</a>
+
+          <a class="btn" href="#contact">📩 Contact Me</a>
+
+        </div>
+
+      </div>
+
+      <div class="avatar-card reveal" style="transition-delay:.2s">
+
+        <img class="avatar"
+
+          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop"
+
+          alt="Priyal portrait placeholder" />
+
+        <div class="rings" aria-hidden="true"></div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- About -->
+
+  <section class="container" id="about">
+
+    <h2 class="section-title reveal">About Me</h2>
+
+    <p class="section-sub reveal" style="max-width:800px">I'm a software student and frontend developer who loves
+
+      building interactive UI with clean code. I focus on usability, motion, and performance to turn ideas into
+
+      delightful products.</p>
+
+    <div class="about">
+
+      <div class="card reveal">
+
+        <h3>What I do</h3>
+
+        <ul>
+
+          <li>Modern, responsive websites</li>
+
+          <li>Animated UIs with micro‑interactions</li>
+
+          <li>Landing pages that convert</li>
+
+          <li>Design systems & component libraries</li>
+
+        </ul>
+
+      </div>
+
+      <div class="card reveal" style="transition-delay:.06s">
+
+        <h3>Highlights</h3>
+
+        <ul>
+
+          <li>2000+ YouTube subscribers sharing coding tips</li>
+
+          <li>Strong in HTML, CSS, JavaScript, React</li>
+
+          <li>Pixel‑perfect attention to detail</li>
+
+          <li>Love colorful, premium visual styles</li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- Skills -->
+
+  <section class="container" id="skills">
+
+    <h2 class="section-title reveal">Skills</h2>
+
+    <p class="section-sub reveal">Hover to preview • Auto‑animated on scroll</p>
+
+    <div class="skills">
+
+      <div class="skill reveal"><strong>HTML</strong>
+
+        <div class="bar" data-level="95"></div>
+
+      </div>
+
+      <div class="skill reveal" style="transition-delay:.04s"><strong>CSS</strong>
+
+        <div class="bar" data-level="92"></div>
+
+      </div>
+
+      <div class="skill reveal" style="transition-delay:.08s"><strong>JavaScript</strong>
+
+        <div class="bar" data-level="88"></div>
+
+      </div>
+
+      <div class="skill reveal" style="transition-delay:.12s"><strong>React.js</strong>
+
+        <div class="bar" data-level="84"></div>
+
+      </div>
+
+      <div class="skill reveal" style="transition-delay:.16s"><strong>Node.js</strong>
+
+        <div class="bar" data-level="70"></div>
+
+      </div>
+
+      <div class="skill reveal" style="transition-delay:.20s"><strong>Python</strong>
+
+        <div class="bar" data-level="68"></div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- Projects -->
+
+  <section class="container" id="projects">
+
+    <h2 class="section-title reveal">Featured Projects</h2>
+
+    <p class="section-sub reveal">A mix of UI animations, landing pages and tools</p>
+
+    <div class="grid">
+
+      <article class="card reveal">
+
+        <div class="thumb">
+
+          <img src="FOOD RESPONSIVE WEBSITE (2).png" alt="Futuristic Neon Login Preview">
+
+        </div>
+
+        <div class="content">
+
+          <span class="tag">UI/Animation</span>
+
+          <span class="tag">Login Design</span>
+
+          <h3>Food Website</h3>
+
+          <p>Glowing neon borders, particle effects and smooth micro‑interactions for a premium login experience.</p>
+
+          <a class="btn" href="#">Demo</a>
+
+        </div>
+
+      </article>
+
+      <article class="card reveal" style="transition-delay:.04s">
+
+        <div class="thumb">
+
+          <img src="Orange And Pink Illustrative Top AI Websites YouTube Thumbnail (2).png"
+
+            alt="Festive Signup Flow Preview">
+
+        </div>
+
+        <div class="content">
+
+          <span class="tag">Seasonal</span>
+
+          <span class="tag">Themed UI</span>
+
+          <h3>Client Construction Website</h3>
+
+          <p>Colorful, culturally‑themed UI with celebratory animation and accessibility‑first forms.</p>
+
+          <a class="btn" href="#">Demo</a>
+
+        </div>
+
+      </article>
+
+      <article class="card reveal" style="transition-delay:.08s">
+
+        <div class="thumb">
+
+          <img src="Untitled design (87).png" alt="Animated Portfolio Preview">
+
+        </div>
+
+        <div class="content">
+
+          <span class="tag">Portfolio</span>
+
+          <span class="tag">Responsive</span>
+
+          <h3>First Portfolio Website</h3>
+
+          <p>High‑performance animated portfolio with reveal on scroll, theme toggle, and grid projects.</p>
+
+          <a class="btn" href="#">Demo</a>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- Services -->
+
+  <section class="container" id="services">
+
+    <h2 class="section-title reveal">Services</h2>
+
+    <p class="section-sub reveal">Simple packages for any stage</p>
+
+    <div class="grid">
+
+      <div class="service reveal">
+
+        <h3>Starter Landing</h3>
+
+        <p>One‑page responsive site with modern animations and contact form.</p>
+
+        <p><strong>Timeline:</strong> ~3–5 days</p>
+
+      </div>
+
+      <div class="service reveal" style="transition-delay:.04s">
+
+        <h3>Brand Website</h3>
+
+        <p>Multi‑page site, CMS‑ready structure, optimized for conversions.</p>
+
+        <p><strong>Timeline:</strong> ~1–2 weeks</p>
+
+      </div>
+
+      <div class="service reveal" style="transition-delay:.08s">
+
+        <h3>UI & Components</h3>
+
+        <p>Design system, reusable components, and micro‑interaction library.</p>
+
+        <p><strong>Timeline:</strong> custom</p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- Contact -->
+
+  <section class="container" id="contact">
+
+    <h2 class="section-title reveal">Get in touch</h2>
+
+    <p class="section-sub reveal">Have a project in mind? Let's build something beautiful.</p>
+
+    <form class="reveal" id="contactForm">
+
+      <input type="text" name="name" placeholder="Your name" required>
+
+      <input type="email" name="email" placeholder="Email address" required>
+
+      <textarea name="message" placeholder="Tell me about your project…" required></textarea>
+
+      <button class="btn primary" type="submit">Send Message</button>
+
+    </form>
+
+  </section>
+
+
+
+  <footer>
+
+    <div class="container">
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+
+        <p>© <span id="year"></span> Priyal Malviya. All rights reserved.</p>
+
+        <div style="display:flex;gap:10px;align-items:center">
+
+          <a class="btn" href="#">GitHub</a>
+
+          <a class="btn" href="#">LinkedIn</a>
+
+          <a class="btn" href="#">YouTube</a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+
+  <script>
+
+    // Navbar mobile toggle
+
+    const menuBtn = document.getElementById('menuBtn');
+
+    const navlinks = document.getElementById('navlinks');
+
+    menuBtn.addEventListener('click', () => navlinks.classList.toggle('open'));
+
+
+
+    // Theme toggle (persist)
+
+    const themeToggle = document.getElementById('themeToggle');
+
+    const saved
