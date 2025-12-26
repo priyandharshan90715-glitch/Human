@@ -87,12 +87,14 @@ button:hover{background:#3a54d1;}
     <textarea id="desc" placeholder="Description / Access details"></textarea>
     <button onclick="addItem()">Add Purchase</button>
 
+    <hr style="margin:20px 0;border:1px solid #444;">
+
     <!-- CHANGE ADMIN PASSWORD -->
-    <hr style="margin:15px 0;border:1px solid #444;">
-    <h3 style="text-align:center;color:#bbb;">Change Admin Password</h3>
-    <input type="password" id="newAdminPass" placeholder="New Password">
-    <input type="password" id="confirmAdminPass" placeholder="Confirm Password">
-    <button onclick="changeAdminPass()">Update Password</button>
+    <h3>Change Admin Password</h3>
+    <input type="password" id="oldPass" placeholder="Current Password">
+    <input type="password" id="newPass" placeholder="New Password">
+    <input type="password" id="confirmPass" placeholder="Confirm New Password">
+    <button onclick="changeAdminPass()">Change Password</button>
   </div>
 
   <!-- PURCHASE LIST -->
@@ -103,7 +105,7 @@ button:hover{background:#3a54d1;}
 
 <script>
 const currentUser = localStorage.getItem("currentUser");
-const role = localStorage.getItem("currentRole");
+const role = currentUser === "admin" ? "admin" : "user";
 
 if(!currentUser){
   location.href="index.html";
@@ -189,27 +191,30 @@ function delItem(i){
 
 /* CHANGE ADMIN PASSWORD */
 function changeAdminPass(){
-  const newPass = document.getElementById("newAdminPass").value;
-  const confirmPass = document.getElementById("confirmAdminPass").value;
+  const oldPass = document.getElementById("oldPass").value;
+  const newPass = document.getElementById("newPass").value;
+  const confirmPass = document.getElementById("confirmPass").value;
 
-  if(!newPass || !confirmPass){
-    alert("Please fill both fields");
+  const storedPass = localStorage.getItem("admin_pass") || "Admin@123";
+
+  if(oldPass !== storedPass){
+    alert("Current password is incorrect!");
     return;
   }
-
+  if(!newPass){
+    alert("New password cannot be empty!");
+    return;
+  }
   if(newPass !== confirmPass){
-    alert("Passwords do not match");
+    alert("New passwords do not match!");
     return;
   }
 
-  // Update admin password in localStorage
-  const adminData = JSON.parse(localStorage.getItem("user_admin") || "{}");
-  adminData.pass = newPass;
-  localStorage.setItem("user_admin", JSON.stringify(adminData));
-
-  alert("Admin password updated successfully!");
-  document.getElementById("newAdminPass").value = "";
-  document.getElementById("confirmAdminPass").value = "";
+  localStorage.setItem("admin_pass", newPass);
+  alert("Admin password changed successfully!");
+  document.getElementById("oldPass").value = "";
+  document.getElementById("newPass").value = "";
+  document.getElementById("confirmPass").value = "";
 }
 
 /* LOGOUT */
