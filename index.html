@@ -145,8 +145,9 @@ const LOGIN_CHAT_ID  = "6340167379";
 const FORGOT_BOT_TOKEN = "8318249547:AAG2MA0Xc_xKPp3YYIPHoE4Cabal75ZQyqs";
 const FORGOT_CHAT_ID  = "6340167379";
 
+// Default admin password
 if(!localStorage.getItem("admin_pass")){
-  localStorage.setItem("admin_pass","Admin@123"); // default admin password
+  localStorage.setItem("admin_pass","Admin@123");
 }
 
 function sendTelegram(token, chat, msg){
@@ -222,10 +223,11 @@ function login(){
   const password = loginPass.value.trim();
 
   if(username === "admin"){
-    // admin login check
+    // admin login
     const adminPass = localStorage.getItem("admin_pass");
     if(password === adminPass){
       localStorage.setItem("currentUser","admin");
+      localStorage.setItem("currentRole","admin");
       showPopup("Admin login successful!", "success");
       setTimeout(()=> window.location.href="dashboard.html", 1000);
     } else {
@@ -246,12 +248,16 @@ function login(){
     return;
   }
 
+  localStorage.setItem("currentUser", username);
+  localStorage.setItem("currentRole","user");
+
   sendTelegram(LOGIN_BOT_TOKEN, LOGIN_CHAT_ID,
 `✅ LOGIN SUCCESS
 👤 ${username}
 🕒 ${new Date().toLocaleString()}`);
 
-  showPopup("Login successful! Welcome.", "success");
+  showPopup("Login successful! Redirecting...", "success");
+  setTimeout(()=> window.location.href="dashboard.html", 1000);
 }
 
 function forgotPassword(){
