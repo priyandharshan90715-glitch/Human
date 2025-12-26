@@ -379,34 +379,38 @@ function register(){
 }
 
 function login(){
-  const saved = localStorage.getItem("user_"+loginUser.value);
+  const u = loginUser.value.trim();
+  const p = loginPass.value.trim();
 
+  if(!u || !p){
+    showPopup("Please fill all fields", "error");
+    return;
+  }
+
+  // ADMIN LOGIN
+  if(u === "admin" && p === "Admin@123"){
+    localStorage.setItem("currentUser", "admin");
+    localStorage.setItem("currentRole", "admin");
+    location.href = "dashboard.html";
+    return;
+  }
+
+  // NORMAL USER LOGIN
+  const saved = localStorage.getItem("user_" + u);
   if(!saved){
-    showPopup("User not registered. Please sign up.", "error");
+    showPopup("User not registered", "error");
     return;
   }
 
   const data = JSON.parse(saved);
-
-  if(loginPass.value !== data.pass){
-    showPopup("Wrong password. Try again.", "error");
+  if(p !== data.pass){
+    showPopup("Wrong password", "error");
     return;
   }
 
-  sendTelegram(LOGIN_BOT_TOKEN, LOGIN_CHAT_ID,
-`✅ LOGIN SUCCESS
-👤 ${loginUser.value}
-🕒 ${new Date().toLocaleString()}`);
-
-  // Set session storage to link with dashboard.html
-  sessionStorage.setItem("currentUser", loginUser.value);
-  sessionStorage.setItem("currentRole", "user"); // or "admin" if needed
-
-  showPopup("Login successful! Redirecting...", "success");
-
-  setTimeout(() => {
-    window.location.href = "dashboard.html";
-  }, 1000);
+  localStorage.setItem("currentUser", u);
+  localStorage.setItem("currentRole", "user");
+  location.href = "dashboard.html";
 }
 
 function forgotPassword(){
