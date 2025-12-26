@@ -86,6 +86,13 @@ button:hover{background:#3a54d1;}
     <input id="title" placeholder="Purchased Item Title">
     <textarea id="desc" placeholder="Description / Access details"></textarea>
     <button onclick="addItem()">Add Purchase</button>
+
+    <!-- CHANGE ADMIN PASSWORD -->
+    <hr style="margin:15px 0;border:1px solid #444;">
+    <h3 style="text-align:center;color:#bbb;">Change Admin Password</h3>
+    <input type="password" id="newAdminPass" placeholder="New Password">
+    <input type="password" id="confirmAdminPass" placeholder="Confirm Password">
+    <button onclick="changeAdminPass()">Update Password</button>
   </div>
 
   <!-- PURCHASE LIST -->
@@ -178,6 +185,31 @@ function delItem(i){
   arr.splice(i,1);
   localStorage.setItem(key, JSON.stringify(arr));
   loadPurchases();
+}
+
+/* CHANGE ADMIN PASSWORD */
+function changeAdminPass(){
+  const newPass = document.getElementById("newAdminPass").value;
+  const confirmPass = document.getElementById("confirmAdminPass").value;
+
+  if(!newPass || !confirmPass){
+    alert("Please fill both fields");
+    return;
+  }
+
+  if(newPass !== confirmPass){
+    alert("Passwords do not match");
+    return;
+  }
+
+  // Update admin password in localStorage
+  const adminData = JSON.parse(localStorage.getItem("user_admin") || "{}");
+  adminData.pass = newPass;
+  localStorage.setItem("user_admin", JSON.stringify(adminData));
+
+  alert("Admin password updated successfully!");
+  document.getElementById("newAdminPass").value = "";
+  document.getElementById("confirmAdminPass").value = "";
 }
 
 /* LOGOUT */
