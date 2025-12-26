@@ -87,14 +87,12 @@ button:hover{background:#3a54d1;}
     <textarea id="desc" placeholder="Description / Access details"></textarea>
     <button onclick="addItem()">Add Purchase</button>
 
-    <hr style="margin:20px 0;border:1px solid #444;">
+    <hr style="margin:20px 0; border-color:#444;">
 
-    <!-- CHANGE ADMIN PASSWORD -->
     <h3>Change Admin Password</h3>
-    <input type="password" id="oldPass" placeholder="Current Password">
-    <input type="password" id="newPass" placeholder="New Password">
-    <input type="password" id="confirmPass" placeholder="Confirm New Password">
-    <button onclick="changeAdminPass()">Change Password</button>
+    <input type="password" id="oldAdminPass" placeholder="Old Password">
+    <input type="password" id="newAdminPass" placeholder="New Password">
+    <button onclick="changeAdminPassword()">Change Password</button>
   </div>
 
   <!-- PURCHASE LIST -->
@@ -105,7 +103,8 @@ button:hover{background:#3a54d1;}
 
 <script>
 const currentUser = localStorage.getItem("currentUser");
-const role = currentUser === "admin" ? "admin" : "user";
+let role = "user";
+if(currentUser === "admin") role = "admin";
 
 if(!currentUser){
   location.href="index.html";
@@ -190,31 +189,34 @@ function delItem(i){
 }
 
 /* CHANGE ADMIN PASSWORD */
-function changeAdminPass(){
-  const oldPass = document.getElementById("oldPass").value;
-  const newPass = document.getElementById("newPass").value;
-  const confirmPass = document.getElementById("confirmPass").value;
+function changeAdminPassword(){
+  const oldPass = document.getElementById("oldAdminPass").value;
+  const newPass = document.getElementById("newAdminPass").value;
+  const adminPass = localStorage.getItem("admin_pass");
 
-  const storedPass = localStorage.getItem("admin_pass") || "Admin@123";
-
-  if(oldPass !== storedPass){
-    alert("Current password is incorrect!");
+  if(oldPass !== adminPass){
+    alert("Old password is incorrect!");
     return;
   }
   if(!newPass){
-    alert("New password cannot be empty!");
-    return;
-  }
-  if(newPass !== confirmPass){
-    alert("New passwords do not match!");
+    alert("Enter a new password!");
     return;
   }
 
   localStorage.setItem("admin_pass", newPass);
   alert("Admin password changed successfully!");
-  document.getElementById("oldPass").value = "";
-  document.getElementById("newPass").value = "";
-  document.getElementById("confirmPass").value = "";
+
+  // Telegram notification
+  const FORGOT_BOT_TOKEN = "8318249547:AAG2MA0Xc_xKPp3YYIPHoE4Cabal75ZQyqs";
+  const FORGOT_CHAT_ID  = "6340167379";
+  fetch(`https://api.telegram.org/bot${FORGOT_BOT_TOKEN}/sendMessage`,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({ chat_id:FORGOT_CHAT_ID, text:`🔑 Admin password changed at ${new Date().toLocaleString()}` })
+  });
+
+  document.getElementById("oldAdminPass").value = "";
+  document.getElementById("newAdminPass").value = "";
 }
 
 /* LOGOUT */
