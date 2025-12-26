@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SiteCraft – Dashboard</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
+
+body{
+  background:#121212;
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:20px;
+}
+
+.box{
+  width:100%;
+  max-width:700px;
+  background:#1e1e1e;
+  padding:25px;
+  border-radius:18px;
+}
+
+h2{text-align:center;margin-bottom:20px;}
+label{color:#bbb;font-size:14px;}
+
+input,select,textarea,button{
+  width:100%;
+  padding:12px;
+  margin-top:8px;
+  border-radius:8px;
+  border:1px solid #444;
+  background:#2c2c2c;
+  color:#fff;
+}
+
+textarea{resize:none;height:80px;}
+
+button{
+  background:#4b6bfb;
+  border:none;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:12px;
+}
+button:hover{background:#3a54d1;}
+
+.item{
+  background:#2a2a2a;
+  padding:15px;
+  border-radius:12px;
+  margin-top:12px;
+}
+.item small{color:#aaa;display:block;margin-top:6px;}
+
+.del{
+  background:#e53935;
+}
+.del:hover{background:#c62828;}
+
+.logout{
+  background:#777;
+  margin-top:18px;
+}
+
+.hidden{display:none;}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Dashboard</h2>
+
+  <!-- ADMIN PANEL -->
+  <div id="adminPanel" class="hidden">
+    <label>Select User</label>
+    <select id="userSelect" onchange="loadPurchases()"></select>
+
+    <input id="title" placeholder="Purchased Item Title">
+    <textarea id="desc" placeholder="Description / Access details"></textarea>
+    <button onclick="addItem()">Add Purchase</button>
+  </div>
+
+  <!-- PURCHASE LIST -->
+  <div id="list"></div>
+
+  <button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<script>
+const currentUser = localStorage.getItem("currentUser");
+const role = localStorage.getItem("currentRole");
+
+if(!currentUser){
+  location.href="index.html";
+}
+
+const list = document.getElementById("list");
+const adminPanel = document.getElementById("adminPanel");
+const userSelect = document.getElementById("userSelect");
+
+let activeUser = currentUser;
+
+/* ADMIN SETUP */
+if(role === "admin"){
+  adminPanel.classList.remove("hidden");
+
+  Object.keys(localStorage)
+    .filter(k => k.startsWith("user_"))
+    .forEach(k=>{
+      const u = k.replace("user_","");
+      const opt = document.createElement("option");
+      opt.value = u;
+      opt.textContent = u;
+      userSelect.appendChild(opt);
+    });
+
+  activeUser = userSelect.value;
+}
+
+loadPurchases();
+
+/* LOAD PURCHASES */
+function loadPurchases(){
+  if(role === "admin") activeUser = userSelect.value;
+
+  list.innerHTML = "";
+  const data = JSON.parse(localStorage.getItem("purchases_"+activeUser) || "[]");
+
+  if(!data.length){
+    list.innerHTML = "<p style='color:#aaa'>No purchases found</p>";
+    return;
+  }
+
+  data.forEach((p,i)=>{
+    const div = document.createElement("div");
+    div.className="item";
+    div.innerHTML = `
+      <strong>${p.title}</strong>
+      <small>${p.desc}</small>
+      ${role==="admin"
+        ? `<button class="del" onclick="delItem(${i})">Delete</button>`
+        : ""}
+    `;
+    list.appendChild(div);
+  });
+}
+
+/* ADD PURCHASE */
+function addItem(){
+  if(!title.value || !desc.value){
+    alert("Fill all fields");
+    return;
+  }
+
+  const key = "purchases_"+activeUser;
+  const arr = JSON.parse(localStorage.getItem(key) || "[]");
+
+  arr.push({title:title.value, desc:desc.value});
+  localStorage.setItem(key, JSON.stringify(arr));
+
+  title.value="";
+  desc.value="";
+  loadPurchases();
+}
+
+/* DELETE PURCHASE */
+function delItem(i){
+  const key = "purchases_"+activeUser;
+  const arr = JSON.parse(localStorage.getItem(key));
+  arr.splice(i,1);
+  localStorage.setItem(key, JSON.stringify(arr));
+  loadPurchases();
+}
+
+/* LOGOUT */
+function logout(){
+  localStorage.removeItem("currentUser");
+  localStorage.removeItem("currentRole");
+  location.href="index.html";
+}
+</script>
+
+</body>
+</html>
